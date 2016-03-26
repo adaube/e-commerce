@@ -14,7 +14,7 @@ router.post('/login', passport.authenticate('local-login', {
   failureFlash: true
 }));
 
-router.get('/profile', function(res, res) {
+router.get('/profile', function(req, res, next) {
   User.findOne({ _id: req.user._id }, function(err, user) {
     if (err) return next(err);
     res.render('accounts/profile', { user: user });
@@ -27,12 +27,13 @@ router.get('/signup', function(req, res, next) {
   });
 });
 
-router.post('/signup', function(req, res) {
+router.post('/signup', function(req, res, next) {
   var user = new User();
 
   user.profile.name = req.body.name;
   user.email = req.body.email;
   user.password = req.body.password;
+  user.profile.picture - user.gravatar();
 
   User.findOne({ email: req.body.email }, function(err, existingUser) {
 
@@ -43,10 +44,18 @@ router.post('/signup', function(req, res) {
       user.save(function(err, user) {
         if (err) return next(err);
 
-        return res.redirect('/');
+        req.logIn(user, function(err) {
+          if (err) return next(err);
+          res.redirect('/profile');
+        });
       });
     }
   });
+});
+
+router.get('/logout', function(req, res, next) {
+  req.logout();
+  res.redirect('/')
 });
 
 module.exports = router;
