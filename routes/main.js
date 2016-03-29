@@ -43,7 +43,7 @@ stream.on('data', function() {
 stream.on('close', function() {
   console.log("Indexed " + count + " documents");
 });
-stream.on('data', function() {
+stream.on('error', function(err) {
   console.log(err);
 });
 
@@ -55,7 +55,7 @@ router.get('/search', function(req, res, next) {
   if (req.query.q) {
     Product.search({
       query_string: { query: req.query.q }
-    }, function (err, results) {
+    }, function(err, results) {
       results:
       if (err) return next(err);
       var data = results.hits.hits.map(function(hit) {
@@ -70,7 +70,7 @@ router.get('/search', function(req, res, next) {
 });
 
 
-router.get('/', function(req, res) {
+router.get('/', function(req, res, next) {
 
   if (req.user) {
     paginate(req, res, next);
@@ -80,7 +80,7 @@ router.get('/', function(req, res) {
 });
 
 router.get('/page/:page', function(req, res, next) {
-  paginate(req, res, next)
+  paginate(req, res, next);
 });
 
 router.get('/about', function(req, res) {
