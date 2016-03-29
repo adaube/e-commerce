@@ -1,3 +1,4 @@
+
 var express = require('express');
 var morgan = require('morgan');
 var mongoose = require('mongoose');
@@ -9,6 +10,7 @@ var cookieParser = require('cookie-parser');
 var flash = require('express-flash');
 var MongoStore = require('connect-mongo')(session);
 var passport = require('passport');
+
 
 var secret = require('./config/secret');
 var User = require('./models/user');
