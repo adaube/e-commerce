@@ -16,6 +16,8 @@ var secret = require('./config/secret');
 var User = require('./models/user');
 var Category = require('./models/category');
 
+var cartLength = require('./middleware/middleware');
+
 var app = express();
 
 mongoose.connect(secret.database, function(err) {
